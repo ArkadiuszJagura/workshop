@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cntext="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <import resource="classpath:dao.xml"/>
+
+
+    <bean id="customerService" class="pl.kodolamacz.service.CustomerService">
+        <property name="customerDao" ref ="customerDao"/>
+    </bean>
+
+    <bean id="employerService" class="pl.kodolamacz.service.EmployerService">
+        <property name="employerDao" ref="employerDao"/>
+    </bean>
+
+    <bean id="orderService" class="pl.kodolamacz.service.OrderService">
+        <property name="orderDao" ref="orderDao"/>
+        <property name="employerDao" ref="employerDao"/>
+        <property name="customerDao" ref="customerDao"/>
+        <property name="sparePartDao" ref="sparePartDao"/>
+        <property name="serviceDao" ref="serviceDao"/>
+    </bean>
+
+    <bean id="serviceService" class="pl.kodolamacz.service.ServiceService">
+        <property name="serviceDao" ref="serviceDao"/>
+    </bean>
+
+
+    <bean id="warehouseService" class="pl.kodolamacz.service.WarehouseService">
+        <property name="warehouseDao" ref="warehouseDao"/>
+        <property name="sparePartDao" ref="sparePartDao"/>
+    </bean>
+
+
+</beans>
