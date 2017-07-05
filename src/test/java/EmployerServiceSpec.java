@@ -1,3 +1,4 @@
+import org.assertj.core.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,6 +11,8 @@ import pl.kodolamacz.service.EmployerService;
 import org.junit.Test;
 
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by Jag on 2017-07-04.
@@ -29,13 +32,31 @@ public class EmployerServiceSpec extends AbstractTransactionalJUnit4SpringContex
     public void shouldAddNewEmployer() throws Exception {
         //given
         String employerName = "Jan";
-        int count1 = jdbcTemplate.queryForObject("SELECT count(*) from employer where name like ?", Integer.class, employerName);
+        int count1 = jdbcTemplate.queryForObject("SELECT count(*) FROM employer WHERE name like ?", Integer.class, employerName);
 
         //when
         employerService.addEmployer(employerName);
 
+        //then
+        int count2 = jdbcTemplate.queryForObject("SELECT count(*) FROM employer WHERE name like ?", Integer.class, employerName);
+        assertThat(count2 - count1).isEqualTo(1);
     }
 
+    @Test
+    public void shouldGetEmployerById() throws Exception {
+        //given
+        employerService.addEmployer("Tomasz");
+        Integer id = jdbcTemplate.queryForObject("SELECT max(id) from employer", Integer.class);
+
+
+        //when
+        Employer employer = employerService.findEmployer(id);
+
+
+        //then
+        assertThat(employer).isNotNull();
+
+    }
 
 
 
